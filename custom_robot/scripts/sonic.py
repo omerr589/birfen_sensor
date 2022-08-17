@@ -3,6 +3,7 @@
 from cmath import inf
 import rospy
 from sensor_msgs.msg import LaserScan, Range
+import tf
 
 # 345 to 389 ultrasonic sensor  
 
@@ -14,12 +15,19 @@ def range_callback(msg):
         range_sensor = msg.range
 
 
-
+# timer_callback
 def laser_callback(msg):
     global range_sensor
-    pub = rospy.Publisher('/scan2', LaserScan, queue_size=5)
-    rate = rospy.Rate(100) # 10hz
     scan = LaserScan()
+
+    listener = tf.TransformListener()
+    try:
+        (trans,rot) = listener.lookupTransform('laser_frame', 'ultrasonic_sensor_link', rospy.Time(0))
+    except (tf.LookupException, tf.ConnectivityException):
+        pass
+
+    print(trans)
+    
     
     scan.header.stamp = msg.header.stamp
     scan.header.frame_id = msg.header.frame_id
@@ -34,7 +42,11 @@ def laser_callback(msg):
     scan.ranges[0:len(msg.ranges)-1] = msg.ranges[0:len(msg.ranges)-1]
     for i in range(0, len(msg.ranges)-1):
         if i < 389 and i > 345 and range_sensor < msg.ranges[i]:
-            scan.ranges[i] = range_sensor
+            scan.ranges[i] = range_sensor +trans[0]
+
+        
+    pub = rospy.Publisher('/scan2', LaserScan, queue_size=5)
+    rate = rospy.Rate(100) # 10hz
     pub.publish(scan)
     rate.sleep()
 

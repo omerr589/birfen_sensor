@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+  
     <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find custom_robot)/urdf/car.xacro'" />
     <arg name="world" default="$(find custom_robot)/worlds/custom_world.world"/>
     <arg name="open_rviz" default="true" />
@@ -27,5 +28,5 @@
 
 
   <node name = "sonic" pkg = "custom_robot" type = "sonic.py"  output="screen" />
-          
+   
 </launch>

@@ -299,28 +299,27 @@
   </transmission>
 
   <gazebo>
-        <plugin name= "differential_drive_controller" filename=" libgazebo_ros_diff_drive.so">
-            <legacyMode> true</legacyMode>
-            <rosDebugLevel> Debug</rosDebugLevel>
-            <publishWheelTF>false</publishWheelTF>
-            <robotNamespace>/</robotNamespace>
-            <publishTf>1</publishTf>
-            <publishWheelJointState>false</publishWheelJointState>
-            <alwaysOn>true</alwaysOn>
-            <updateRate>100</updateRate>
-            <leftJoint>sol_on_teker_joint  </leftJoint>
-            <rightJoint>sag_arka_teker_joint  </rightJoint>
-            <wheelSeparation>0.5</wheelSeparation>
-            <wheelDiameter>0.5</wheelDiameter>
-            <broadcastTF>1</broadcastTF>
-            <wheelTorque>5</wheelTorque>
-            <wheelAcceleration>5</wheelAcceleration>
-            <commandTopic>cmd_vel</commandTopic>
-            <odometryTopic>odom</odometryTopic>
-            <odometryFrame>odom</odometryFrame>
-            <robotBaseFrame>govde</robotBaseFrame>
-        </plugin>
-  </gazebo>    
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>20.0</updateRate>
+      <robotNamespace>/</robotNamespace>
+      <leftFrontJoint>sol_on_teker_joint</leftFrontJoint>
+      <rightFrontJoint>sag_on_teker_joint</rightFrontJoint>
+      <leftRearJoint>sol_arka_teker_joint</leftRearJoint>
+      <rightRearJoint>sag_arka_teker_joint</rightRearJoint>
+      <wheelSeparation>0.5</wheelSeparation>
+      <wheelDiameter>0.2</wheelDiameter>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <torque>5</torque>
+      <MaxForce>5.0</MaxForce>
+      <commandTopic>cmd_vel</commandTopic>
+      <broadcastTF>true</broadcastTF>
+      <!--<odometryTopic>odom</odometryTopic>
+      <odometryFrame>/odom</odometryFrame>-->
+      <covariance_x>0.000100</covariance_x>
+      <covariance_y>0.000100</covariance_y>
+      <covariance_yaw>0.010000</covariance_yaw>
+    </plugin>
+</gazebo>
 
   <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
